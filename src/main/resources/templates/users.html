@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Users</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Users</h1>
+
+<a th:href="@{/new}">Add new user</a>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td>
+            <form th:action="@{/edit}" method="get">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <button type="submit">Edit</button>
+            </form>
+            <form th:action="@{/delete}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>

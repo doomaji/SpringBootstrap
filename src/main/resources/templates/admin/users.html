@@ -23,7 +23,7 @@
 <body>
 <h1>Users</h1>
 
-<a th:href="@{/new}">Add new user</a>
+<a th:href="@{/admin/new}">Add new user</a>
 
 <table>
     <tr>
@@ -39,11 +39,11 @@
         <td th:text="${user.lastName}"></td>
         <td th:text="${user.email}"></td>
         <td>
-            <form th:action="@{/edit}" method="get">
+            <form th:action="@{/admin/edit}" method="get">
                 <input type="hidden" name="id" th:value="${user.id}"/>
                 <button type="submit">Edit</button>
             </form>
-            <form th:action="@{/delete}" method="post">
+            <form th:action="@{/admin/delete}" method="post">
                 <input type="hidden" name="id" th:value="${user.id}"/>
                 <button type="submit">Delete</button>
             </form>

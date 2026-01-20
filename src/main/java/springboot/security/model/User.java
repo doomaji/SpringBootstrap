@@ -30,7 +30,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @Column(name = "name")
+    @Column(name = "firstName")
     @NotBlank(message = "Поле не может быть пустым")
     @Pattern(
             regexp = "^[^0-9]+$",
@@ -38,7 +38,7 @@ public class User implements UserDetails {
     )
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "lastName")
     @NotBlank(message = "Поле не может быть пустым")
     @Pattern(
             regexp = "^[^0-9]+$",
@@ -54,10 +54,12 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(String firstName, String lastName, String email) {
+    public User(String firstName, String lastName, String email, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
+        this.username = username;
     }
 
     public String toString() {
@@ -103,7 +105,7 @@ public class User implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return "";
+        return password;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class AdminController {
 
     @GetMapping
     public String adminHome() {
-        return "admin/index";
+        return "admin/home";
     }
 
     @GetMapping("/users")
@@ -31,29 +31,29 @@ public class AdminController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("user", new User());
-        return "user-form";
+        return "admin/user-form";
     }
 
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model) {
         model.addAttribute("user", userService.getUser(id));
-        return "user-form";
+        return "admin/user-form";
     }
 
     @PostMapping("/save")
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "user-form";
+            return "admin/user-form";
         }
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/admin/users";
     }
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/admin/users";
     }
-    // create/edit/delete тоже под /admin/...
+
 }

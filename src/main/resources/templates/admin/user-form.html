@@ -7,7 +7,7 @@
 <body>
 <h1 th:text="${#strings.isEmpty(user?.id) ? 'Create user' : 'Edit user'}"></h1>
 
-<form th:action="@{/save}" th:object="${user}" method="post">
+<form th:action="@{/admin/save}" th:object="${user}" method="post">
     <input type="hidden" th:field="*{id}"/>
 
     <label>First name:
@@ -37,10 +37,33 @@
     </div>
     <br/>
 
-    <button type="submit">Save</button>
+    <label>username:
+        <input type="text" th:field="*{username}"/>
+    </label>
+    <div
+            th:if="${#fields.hasErrors('username')}"
+            th:errors="*{username}" style="color: red;">
+    </div>
+    <br/>
+
+    <label>Password:
+        <input type="password" th:field="*{password}" />
+    </label>
+    <div
+            th:if="${#fields.hasErrors('password')}"
+            th:errors="*{password}" style="color: red;">
+    </div>
+    <br/>
+
+    <br/>
+
+    <form th:action="@{/admin/save}" th:object="${user}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <button type="submit">Save</button>
+    </form>
 </form>
 
-<form th:action="@{/}" method="get">
+<form th:action="@{/admin/users}" method="get">
     <button type="submit">Back to list</button>
 </form>
 

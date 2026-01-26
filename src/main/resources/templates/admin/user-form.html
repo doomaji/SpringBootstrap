@@ -51,6 +51,15 @@
     </div>
     <br/>
 
+    <label>Roles:
+        <label th:each="r : ${roles}" style="display:block; margin:6px 0;">
+            <input type="radio" th:field="*{roles}" th:value="${r.id}">
+            <span th:text="${r.name}"></span>
+        </label>
+
+    <br/>
+    </label>
+
     <button type="submit">Save</button>
 </form>
 

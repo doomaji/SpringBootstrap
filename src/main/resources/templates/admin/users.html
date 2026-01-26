@@ -32,6 +32,7 @@
         <th>Last name</th>
         <th>Email</th>
         <th>Username</th>
+        <th>Role</th>
         <th>Actions</th>
     </tr>
     <tr th:each="user : ${users}">
@@ -40,6 +41,7 @@
         <td th:text="${user.lastName}"></td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.username}"></td>
+        <td th:text="${user.roles}"></td>
         <td>
             <form th:action="@{/admin/edit}" method="get">
                 <input type="hidden" name="id" th:value="${user.id}"/>

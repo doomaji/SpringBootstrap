@@ -1,0 +1,48 @@
+<div th:fragment="userForm(user, roles)">
+    <form th:action="@{/admin/save}" th:object="${user}" method="post">
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mx-auto" style="max-width: 420px;">
+
+            <div class="text-center fw-bold mb-1">First Name</div>
+            <div class="mb-3">
+                <input class="form-control form-control-sm" th:field="*{firstName}">
+            </div>
+
+            <div class="text-center fw-bold mb-1">Last Name</div>
+            <div class="mb-3">
+                <input class="form-control form-control-sm" th:field="*{lastName}">
+            </div>
+
+            <div class="text-center fw-bold mb-1">Email</div>
+            <div class="mb-3">
+                <input class="form-control form-control-sm" th:field="*{email}">
+            </div>
+
+            <div class="text-center fw-bold mb-1">Username</div>
+            <div class="mb-3">
+                <input class="form-control form-control-sm" th:field="*{username}">
+            </div>
+
+            <div class="text-center fw-bold mb-1">Password</div>
+            <div class="mb-3">
+                <input type="password" class="form-control form-control-sm" th:field="*{password}">
+            </div>
+
+            <div class="text-center fw-bold mb-2">Roles</div>
+            <div class="mb-3 text-center">
+                <div th:each="r : ${roles}" class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="roleIds" th:value="${r.id}">
+                    <label class="form-check-label" th:text="${r.name}"></label>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-success px-4" type="submit">Create</button>
+            </div>
+
+        </div>
+    </form>
+</div>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="userTable(users, showActions)">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th th:if="${showActions}" style="width:180px;">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${#strings.listJoin(user.roles.![name.replace('ROLE_','')], ', ')}"></td>
+
+                <td th:if="${showActions}" class="d-flex gap-2">
+                    <button type="button"
+                            class="btn btn-sm btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editModal"
+                            th:data-id="${user.id}"
+                            th:data-firstname="${user.firstName}"
+                            th:data-lastname="${user.lastName}"
+                            th:data-email="${user.email}"
+                            th:data-username="${user.username}">
+                        Edit
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-sm btn-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteModal"
+                            th:data-id="${user.id}"
+                            th:data-firstname="${user.firstName}"
+                            th:data-lastname="${user.lastName}"
+                            th:data-email="${user.email}"
+                            th:data-username="${user.username}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+
+            <tr th:if="${users == null or users.isEmpty()}">
+                <td th:colspan="${showActions} ? 7 : 6" class="text-center text-muted py-4">
+                    No users found
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

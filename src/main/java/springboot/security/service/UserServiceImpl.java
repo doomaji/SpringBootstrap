@@ -8,7 +8,9 @@ import springboot.security.jpa.UserRepository;
 import springboot.security.model.Role;
 import springboot.security.model.User;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -38,7 +40,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User incoming) {
+    public void saveUser(User incoming, List<Long> roleIds) {
+
+        Set<Role> roles = new HashSet<>();
+        if (roleIds != null && !roleIds.isEmpty()) {
+            roles.addAll(roleRepository.findAllById(roleIds)); // List -> добавили в Set ✅
+        }
+        incoming.setRoles(roles);
 
         if (incoming.getId() == null) {
             incoming.setPassword(passwordEncoder.encode(incoming.getPassword()));
@@ -53,11 +61,13 @@ public class UserServiceImpl implements UserService {
         db.setLastName(incoming.getLastName());
         db.setEmail(incoming.getEmail());
         db.setUsername(incoming.getUsername());
-        db.setRoles(incoming.getRoles());
+        db.setRoles(roles);
 
         if (incoming.getPassword() != null && !incoming.getPassword().isBlank()) {
             db.setPassword(passwordEncoder.encode(incoming.getPassword()));
         }
+
+        userRepository.save(db); // ✅ обязательно
     }
 
     @Override

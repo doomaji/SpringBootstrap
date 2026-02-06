@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import springboot.security.model.User;
 import springboot.security.service.UserService;
 
+import java.security.Principal;
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -24,57 +27,50 @@ public class AdminController {
     }
 
     @GetMapping
-    public String adminHome() {
+    public String adminHome(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("activeTab", "users");
         return "admin/home";
     }
 
-    @GetMapping("/users")
-    public String list(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "admin/users";
-    }
-
-    @GetMapping("/new")
-    public String showCreateForm(Model model) {
-        model.addAttribute("user", new User());
-        addRoles(model);
-        return "admin/user-form";
-    }
-
-    @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        addRoles(model);
-        return "admin/user-form";
+    @GetMapping("/user")
+    public String userHome(Model model, Principal principal) {
+        User me = userService.getByUsername(principal.getName());
+        model.addAttribute("users", List.of(me));
+        return "admin/home";
     }
 
     @PostMapping("/save")
     public String saveUser(@ModelAttribute("user") @Valid User user,
                            BindingResult bindingResult,
+                           @RequestParam(value="roleIds", required=false) List<Long> roleIds,
                            Model model) {
 
-        if (user.getId() == null && userService.usernameExists(user.getUsername())) {
-            bindingResult.rejectValue("username", "duplicate", "Такой username уже занят");
-        }
-
         if (bindingResult.hasErrors()) {
-            addRoles(model);
-            return "admin/user-form";
+            model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("roles", userService.getAllRoles());
+            return "admin/home";
         }
 
-        try {
-            userService.saveUser(user);
-            return "redirect:/admin/users";
-        } catch (DataIntegrityViolationException ex) {
-            bindingResult.rejectValue("username", "duplicate", "Такой username уже занят");
-            addRoles(model);
-            return "admin/user-form";
-        }
+        userService.saveUser(user, roleIds); // новый метод
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/edit")
+    public String edit(@RequestParam("id") Long id, Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("user", userService.getUser(id));
+        model.addAttribute("activeTab", "newUser");
+        return "admin/home";
     }
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/admin/users";
+        return "redirect:/admin?tab=users";
     }
+
 }

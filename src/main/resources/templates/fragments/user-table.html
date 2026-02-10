@@ -13,7 +13,8 @@
                 <th>Email</th>
                 <th>Username</th>
                 <th>Role</th>
-                <th th:if="${showActions}" style="width:180px;">Actions</th>
+                <th th:if="${showActions}" style="width:90px;">Edit</th>
+                <th th:if="${showActions}" style="width:90px;">Delete</th>
             </tr>
             </thead>
 
@@ -25,8 +26,7 @@
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.username}"></td>
                 <td th:text="${#strings.listJoin(user.roles.![name.replace('ROLE_','')], ', ')}"></td>
-
-                <td th:if="${showActions}" class="d-flex gap-2">
+                <td th:if="${showActions}" class="text-center">
                     <button type="button"
                             class="btn btn-sm btn-primary"
                             data-bs-toggle="modal"
@@ -38,7 +38,8 @@
                             th:data-username="${user.username}">
                         Edit
                     </button>
-
+                </td>
+                <td th:if="${showActions}" class="text-center">
                     <button type="button"
                             class="btn btn-sm btn-danger"
                             data-bs-toggle="modal"

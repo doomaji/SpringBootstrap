@@ -4,8 +4,8 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="navbar">
-    <div class="container">
-        <a class="navbar-brand" th:href="@{/}">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand">
             <span sec:authentication="name"></span>
             <span class="text-secondary"> with roles [</span>
             <span th:text="${#strings.listJoin(

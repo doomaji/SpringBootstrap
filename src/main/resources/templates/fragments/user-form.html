@@ -10,25 +10,45 @@
             <div class="mb-3">
                 <input class="form-control form-control-sm" th:field="*{firstName}">
             </div>
+            <div
+                    th:if="${#fields.hasErrors('firstName')}"
+                    th:errors="*{firstName}" style="color: red;">
+            </div>
 
             <div class="text-center fw-bold mb-1">Last Name</div>
             <div class="mb-3">
                 <input class="form-control form-control-sm" th:field="*{lastName}">
+            </div>
+            <div
+                    th:if="${#fields.hasErrors('lastName')}"
+                    th:errors="*{lastName}" style="color: red;">
             </div>
 
             <div class="text-center fw-bold mb-1">Email</div>
             <div class="mb-3">
                 <input class="form-control form-control-sm" th:field="*{email}">
             </div>
+            <div
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}" style="color: red;">
+            </div>
 
             <div class="text-center fw-bold mb-1">Username</div>
             <div class="mb-3">
                 <input class="form-control form-control-sm" th:field="*{username}">
             </div>
+            <div
+                    th:if="${#fields.hasErrors('username')}"
+                    th:errors="*{username}" style="color: red;">
+            </div>
 
             <div class="text-center fw-bold mb-1">Password</div>
             <div class="mb-3">
                 <input type="password" class="form-control form-control-sm" th:field="*{password}">
+            </div>
+            <div
+                    th:if="${#fields.hasErrors('password')}"
+                    th:errors="*{password}" style="color: red;">
             </div>
 
             <div class="text-center fw-bold mb-2">Roles</div>
@@ -37,6 +57,10 @@
                     <input class="form-check-input" type="checkbox" name="roleIds" th:value="${r.id}">
                     <label class="form-check-label" th:text="${r.name}"></label>
                 </div>
+            </div>
+            <div
+                    th:if="${#fields.hasErrors('Roles')}"
+                    th:errors="*{Roles}" style="color: red;">
             </div>
 
             <div class="text-center">

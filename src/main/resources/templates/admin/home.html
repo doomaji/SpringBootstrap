@@ -81,12 +81,25 @@
 
             document.getElementById('edit-id').value = button.getAttribute('data-id') || '';
             document.getElementById('edit-firstName').value = button.getAttribute('data-firstname') || '';
-            document.getElementById('edit-lastName').value = button.getAttribute('data-lastname') || '';
-            document.getElementById('edit-email').value = button.getAttribute('data-email') || '';
-            document.getElementById('edit-username').value = button.getAttribute('data-username') || '';
+            document.getElementById('edit-lastName').value  = button.getAttribute('data-lastname') || '';
+            document.getElementById('edit-email').value     = button.getAttribute('data-email') || '';
+            document.getElementById('edit-username').value  = button.getAttribute('data-username') || '';
+
+            const select = document.getElementById('edit-roles');
+
+            Array.from(select.options).forEach(o => o.selected = false);
+
+            const rolesStr = button.getAttribute('data-roles') || ''; // "1,2"
+            const ids = rolesStr.split(',').map(s => s.trim()).filter(Boolean);
+
+            ids.forEach(id => {
+                const opt = select.querySelector(`option[value="${id}"]`);
+                if (opt) opt.selected = true;
+            });
         });
     });
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const deleteModal = document.getElementById('deleteModal');
@@ -94,12 +107,26 @@
 
         deleteModal.addEventListener('show.bs.modal', (event) => {
             const button = event.relatedTarget;
+            if (!button) return;
 
-            document.getElementById('delete-id').value = button.getAttribute('data-id');
-            document.getElementById('delete-firstName').value = button.getAttribute('data-firstname');
-            document.getElementById('delete-lastName').value = button.getAttribute('data-lastname');
-            document.getElementById('delete-email').value = button.getAttribute('data-email');
-            document.getElementById('delete-username').value = button.getAttribute('data-username');
+            document.getElementById('delete-id').value = button.getAttribute('data-id') || '';
+            document.getElementById('delete-firstName').value = button.getAttribute('data-firstname') || '';
+            document.getElementById('delete-lastName').value = button.getAttribute('data-lastname') || '';
+            document.getElementById('delete-email').value = button.getAttribute('data-email') || '';
+            document.getElementById('delete-username').value = button.getAttribute('data-username') || '';
+
+            const select = document.getElementById('delete-roles');
+            select.innerHTML = '';
+
+            const rolesStr = button.getAttribute('data-roles') || '';
+            const roles = rolesStr.split(',').map(s => s.trim()).filter(Boolean);
+
+            roles.forEach(r => {
+                const opt = document.createElement('option');
+                opt.textContent = r.replace('ROLE_', '');
+                opt.selected = true;
+                select.appendChild(opt);
+            });
         });
     });
 </script>

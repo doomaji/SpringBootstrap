@@ -35,7 +35,8 @@
                             th:data-firstname="${user.firstName}"
                             th:data-lastname="${user.lastName}"
                             th:data-email="${user.email}"
-                            th:data-username="${user.username}">
+                            th:data-username="${user.username}"
+                            th:data-roles="${#strings.listJoin(user.roles.![name], ',')}">
                         Edit
                     </button>
                 </td>
@@ -48,7 +49,8 @@
                             th:data-firstname="${user.firstName}"
                             th:data-lastname="${user.lastName}"
                             th:data-email="${user.email}"
-                            th:data-username="${user.username}">
+                            th:data-username="${user.username}"
+                            th:data-roles="${#strings.listJoin(user.roles.![name], ',')}">
                         Delete
                     </button>
                 </td>

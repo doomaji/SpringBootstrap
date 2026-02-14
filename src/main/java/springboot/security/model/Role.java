@@ -1,6 +1,7 @@
 package springboot.security.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
@@ -12,6 +13,7 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "Поле не может быть пустым")
     private String name;
 
     public Role() {

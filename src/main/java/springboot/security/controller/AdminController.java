@@ -51,20 +51,21 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("users", userService.getAllUsers());
             model.addAttribute("roles", userService.getAllRoles());
+            model.addAttribute("activeTab", "newUser");
+            return "admin/home";
+        }
+        try {
+            userService.saveUser(user, roleIds);
+        } catch (DataIntegrityViolationException e) {
+
+            bindingResult.reject("duplicate", "Username or email already exists");
+            model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("roles", userService.getAllRoles());
+            model.addAttribute("activeTab", "newUser");
             return "admin/home";
         }
 
-        userService.saveUser(user, roleIds); // новый метод
         return "redirect:/admin";
-    }
-
-    @GetMapping("/edit")
-    public String edit(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("roles", userService.getAllRoles());
-        model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("activeTab", "newUser");
-        return "admin/home";
     }
 
     @PostMapping("/delete")

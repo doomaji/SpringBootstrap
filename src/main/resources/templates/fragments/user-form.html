@@ -8,7 +8,9 @@
 
             <div class="text-center fw-bold mb-1">First Name</div>
             <div class="mb-3">
-                <input class="form-control form-control-sm" th:field="*{firstName}">
+                <input class="form-control form-control-sm" th:field="*{firstName}"
+                required
+                th:classappend="${#fields.hasErrors('firstName')} ? ' is-invalid' : ''">
             </div>
             <div
                     th:if="${#fields.hasErrors('firstName')}"
@@ -17,7 +19,9 @@
 
             <div class="text-center fw-bold mb-1">Last Name</div>
             <div class="mb-3">
-                <input class="form-control form-control-sm" th:field="*{lastName}">
+                <input class="form-control form-control-sm" th:field="*{lastName}"
+                       required
+                       th:classappend="${#fields.hasErrors('lastName')} ? ' is-invalid' : ''">
             </div>
             <div
                     th:if="${#fields.hasErrors('lastName')}"
@@ -26,7 +30,9 @@
 
             <div class="text-center fw-bold mb-1">Email</div>
             <div class="mb-3">
-                <input class="form-control form-control-sm" th:field="*{email}">
+                <input class="form-control form-control-sm" th:field="*{email}"
+                       required
+                       th:classappend="${#fields.hasErrors('email')} ? ' is-invalid' : ''">
             </div>
             <div
                     th:if="${#fields.hasErrors('email')}"
@@ -35,7 +41,10 @@
 
             <div class="text-center fw-bold mb-1">Username</div>
             <div class="mb-3">
-                <input class="form-control form-control-sm" th:field="*{username}">
+                <input class="form-control form-control-sm"
+                       th:field="*{username}"
+                       required
+                       th:classappend="${#fields.hasErrors('username')} ? ' is-invalid' : ''">
             </div>
             <div
                     th:if="${#fields.hasErrors('username')}"
@@ -44,7 +53,9 @@
 
             <div class="text-center fw-bold mb-1">Password</div>
             <div class="mb-3">
-                <input type="password" class="form-control form-control-sm" th:field="*{password}">
+                <input type="password" class="form-control form-control-sm" th:field="*{password}"
+                       required
+                       th:classappend="${#fields.hasErrors('password')} ? ' is-invalid' : ''">
             </div>
             <div
                     th:if="${#fields.hasErrors('password')}"
@@ -57,6 +68,10 @@
                     <input class="form-check-input" type="checkbox" name="roleIds" th:value="${r.id}">
                     <label class="form-check-label" th:text="${r.name}"></label>
                 </div>
+            </div>
+            <div
+                    th:if="${#fields.hasErrors('roles')}"
+                    th:errors="*{roles}" style="color: red;">
             </div>
             <div
                     th:if="${#fields.hasErrors('Roles')}"

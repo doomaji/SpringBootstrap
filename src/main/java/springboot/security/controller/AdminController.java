@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import springboot.security.model.User;
+import springboot.security.service.DuplicateUsernameException;
 import springboot.security.service.UserService;
 
 import java.security.Principal;
@@ -22,10 +23,6 @@ public class AdminController {
         this.userService = userService;
     }
 
-    private void addRoles(Model model) {
-        model.addAttribute("roles", userService.getAllRoles());
-    }
-
     @GetMapping
     public String adminHome(Model model) {
         model.addAttribute("users", userService.getAllUsers());
@@ -39,14 +36,22 @@ public class AdminController {
     public String userHome(Model model, Principal principal) {
         User me = userService.getByUsername(principal.getName());
         model.addAttribute("users", List.of(me));
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("activeTab", "users");
         return "admin/home";
     }
 
     @PostMapping("/save")
-    public String saveUser(@ModelAttribute("user") @Valid User user,
+    public String saveUser(@Valid @ModelAttribute("user") User user,
                            BindingResult bindingResult,
                            @RequestParam(value="roleIds", required=false) List<Long> roleIds,
                            Model model) {
+
+        // roles required (сервер)
+        if (roleIds == null || roleIds.isEmpty()) {
+            bindingResult.reject("roles.empty", "Select at least one role");
+        }
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("users", userService.getAllUsers());
@@ -54,11 +59,18 @@ public class AdminController {
             model.addAttribute("activeTab", "newUser");
             return "admin/home";
         }
+
         try {
             userService.saveUser(user, roleIds);
-        } catch (DataIntegrityViolationException e) {
+        } catch (DuplicateUsernameException ex) {
+            bindingResult.rejectValue("username", "username.duplicate", ex.getMessage());
+            model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("roles", userService.getAllRoles());
+            model.addAttribute("activeTab", "newUser");
+            return "admin/home";
+        } catch (IllegalArgumentException ex) {
 
-            bindingResult.reject("duplicate", "Username or email already exists");
+            bindingResult.reject("save.invalid", ex.getMessage());
             model.addAttribute("users", userService.getAllUsers());
             model.addAttribute("roles", userService.getAllRoles());
             model.addAttribute("activeTab", "newUser");

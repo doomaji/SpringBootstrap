@@ -55,8 +55,7 @@
                                     required>
                                 <option th:each="role : ${roles}"
                                         th:value="${role.id}"
-                                        th:text="${role.name.replace('ROLE_','')}"
-                                        th:selected="${user.roles.contains(role)}">
+                                        th:text="${role.name.replace('ROLE_','')}">
                                 </option>
                             </select>
                         </div>

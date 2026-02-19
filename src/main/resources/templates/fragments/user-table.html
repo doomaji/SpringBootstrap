@@ -36,7 +36,7 @@
                             th:data-lastname="${user.lastName}"
                             th:data-email="${user.email}"
                             th:data-username="${user.username}"
-                            th:data-roles="${#strings.listJoin(user.roles.![name], ',')}">
+                            th:data-roles="${#strings.listJoin(user.roles.![id], ',')}">
                         Edit
                     </button>
                 </td>

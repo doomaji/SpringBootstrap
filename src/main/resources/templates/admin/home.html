@@ -89,13 +89,29 @@
 
             Array.from(select.options).forEach(o => o.selected = false);
 
-            const rolesStr = button.getAttribute('data-roles') || ''; // "1,2"
+            const rolesStr = button.getAttribute('data-roles') || '';
             const ids = rolesStr.split(',').map(s => s.trim()).filter(Boolean);
 
             ids.forEach(id => {
                 const opt = select.querySelector(`option[value="${id}"]`);
                 if (opt) opt.selected = true;
             });
+
+
+            const err = document.getElementById('edit-roles-error');
+            if (err) err.textContent = '';
+        });
+
+
+        editModal.addEventListener('submit', (e) => {
+            const form = e.target.closest('form');
+            if (!form) return;
+            const selected = form.querySelectorAll('#edit-roles option:checked').length;
+            if (selected === 0) {
+                e.preventDefault();
+                const err = document.getElementById('edit-roles-error');
+                if (err) err.textContent = 'Select at least one role';
+            }
         });
     });
 </script>

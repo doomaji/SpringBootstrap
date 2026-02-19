@@ -42,9 +42,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User incoming, List<Long> roleIds) {
 
+        if (userRepository.existsByUsername(incoming.getUsername())) {
+
+            if (incoming.getId() == null) {
+                throw new DuplicateUsernameException("Username already exists");
+            }
+
+            User existing = userRepository.findByUsername(incoming.getUsername()).orElse(null);
+            if (existing != null && !existing.getId().equals(incoming.getId())) {
+                throw new DuplicateUsernameException("Username already exists");
+            }
+        }
         Set<Role> roles = new HashSet<>();
         if (roleIds != null && !roleIds.isEmpty()) {
-            roles.addAll(roleRepository.findAllById(roleIds)); // List -> добавили в Set ✅
+            roles.addAll(roleRepository.findAllById(roleIds));
         }
         incoming.setRoles(roles);
 
